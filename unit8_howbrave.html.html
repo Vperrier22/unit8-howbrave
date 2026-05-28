@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 8 – How Brave! 🦁</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple:#7C3AED;--pink:#EC4899;--yellow:#FBBF24;
+    --green:#10B981;--blue:#3B82F6;--orange:#F97316;
+    --red:#EF4444;--bg:#FFF7ED;--card:#fff;
+    --text:#1e1b4b;--muted:#6B7280;--border:#E5E7EB;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+  .header{background:linear-gradient(135deg,#7C3AED,#EC4899,#F97316);padding:32px 24px 24px;text-align:center;}
+  .header-badge{display:inline-block;background:rgba(255,255,255,.22);color:#fff;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:50px;margin-bottom:10px;}
+  .header h1{font-family:'Fredoka One',cursive;font-size:2.6rem;color:#fff;text-shadow:2px 2px 0 rgba(0,0,0,.15);line-height:1.1;}
+  .header h1 span{color:#FBBF24;}
+  .header-sub{color:rgba(255,255,255,.9);font-size:.9rem;font-weight:700;margin-top:6px;}
+  .header-emojis{font-size:1.5rem;margin-top:12px;letter-spacing:5px;}
+
+  .score-bar{background:#fff;border-bottom:2px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+  .score-item{text-align:center;}
+  .score-num{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--purple);}
+  .score-label{font-size:.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.8px;}
+  .progress-wrap{flex:1;min-width:160px;max-width:300px;}
+  .progress-bar-bg{background:#F3F4F6;border-radius:50px;height:10px;overflow:hidden;}
+  .progress-bar-fill{background:linear-gradient(to right,var(--purple),var(--pink));height:10px;border-radius:50px;transition:width .5s ease;}
+
+  .tabs{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid var(--border);}
+  .tab{padding:13px 16px;font-weight:700;font-size:.82rem;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;color:var(--muted);transition:all .2s;flex-shrink:0;}
+  .tab:hover{color:var(--purple);background:#F9FAFB;}
+  .tab.active{color:var(--purple);border-bottom-color:var(--purple);background:#fff;}
+  .tab.corrige{color:#D97706;}
+  .tab.corrige.active{color:#92400E;border-bottom-color:#F59E0B;background:#FFFBEB;}
+
+  .main{max-width:820px;margin:0 auto;padding:24px 16px 60px;}
+  .section{display:none;}
+  .section.active{display:block;}
+
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--border);}
+  .sec-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Fredoka One',cursive;font-size:1.1rem;flex-shrink:0;}
+  .sec-head h2{font-family:'Fredoka One',cursive;font-size:1.4rem;}
+  .sec-tag{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;padding:3px 10px;border-radius:50px;background:#F3F4F6;color:var(--muted);}
+
+  .info-box{background:linear-gradient(135deg,#EDE9FE,#FCE7F3);border:2px dashed #C084FC;border-radius:14px;padding:16px 20px;margin-bottom:20px;font-size:.9rem;line-height:1.7;}
+  .info-box strong{color:var(--purple);}
+  .gram-box{background:linear-gradient(135deg,#DBEAFE,#EDE9FE);border:2px solid #93C5FD;border-radius:14px;padding:18px 22px;margin-bottom:20px;}
+  .gram-box h3{font-family:'Fredoka One',cursive;color:var(--blue);font-size:1rem;margin-bottom:8px;}
+  .formula{background:#fff;border-radius:10px;padding:10px 16px;font-weight:700;font-size:.92rem;border:1.5px solid #BFDBFE;margin-top:8px;}
+  .formula .if{color:var(--blue);} .formula .plus{color:#9CA3AF;margin:0 6px;} .formula .main{color:var(--purple);}
+
+  .card{background:var(--card);border-radius:16px;padding:22px 24px;margin-bottom:18px;box-shadow:0 3px 16px rgba(0,0,0,.06);border-left:5px solid var(--purple);}
+  .card.green{border-left-color:var(--green);}
+  .card.blue{border-left-color:var(--blue);}
+  .card.orange{border-left-color:var(--orange);}
+  .card.pink{border-left-color:var(--pink);}
+  .card.yellow{border-left-color:var(--yellow);}
+  .card-title{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+
+  .wbank{background:#F0FDF4;border:2px dashed var(--green);border-radius:12px;padding:12px 16px;margin-bottom:16px;}
+  .wbank-label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:6px;}
+  .wbank-words{display:flex;flex-wrap:wrap;gap:7px;}
+  .wbank-word{background:#fff;border:1.5px solid #6EE7B7;border-radius:50px;padding:3px 12px;font-weight:700;color:#065F46;font-size:.82rem;cursor:pointer;transition:all .15s;user-select:none;}
+  .wbank-word:hover{background:#D1FAE5;}
+  .wbank-word.used{opacity:.4;pointer-events:none;text-decoration:line-through;}
+
+  .tf-list{list-style:none;}
+  .tf-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;margin-bottom:8px;background:#F9FAFB;border-radius:10px;border:1.5px solid var(--border);flex-wrap:wrap;}
+  .tf-text{flex:1;font-size:.9rem;line-height:1.5;min-width:160px;}
+  .tf-btns{display:flex;gap:8px;flex-shrink:0;}
+  .tf-btn{padding:5px 14px;border-radius:50px;font-weight:700;font-size:.8rem;cursor:pointer;border:2px solid transparent;transition:all .15s;}
+  .tf-btn.t{background:#D1FAE5;color:#065F46;border-color:#6EE7B7;}
+  .tf-btn.f{background:#FEE2E2;color:#991B1B;border-color:#FCA5A5;}
+  .tf-btn:hover{transform:scale(1.05);}
+  .tf-btn.selected-t{background:#065F46;color:#fff;border-color:#065F46;}
+  .tf-btn.selected-f{background:#991B1B;color:#fff;border-color:#991B1B;}
+  .tf-btn.correct{background:#10B981;color:#fff;border-color:#10B981;}
+  .tf-btn.wrong{background:#EF4444;color:#fff;border-color:#EF4444;}
+
+  .q-item{margin-bottom:14px;}
+  .q-text{font-size:.9rem;margin-bottom:6px;font-weight:600;}
+  .q-input{width:100%;border:2px solid var(--border);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:.9rem;resize:vertical;min-height:60px;transition:border-color .2s;color:var(--text);background:#fff;}
+  .q-input:focus{outline:none;border-color:var(--green);}
+
+  .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .match-col{display:flex;flex-direction:column;gap:8px;}
+  .match-item{padding:10px 14px;background:#F9FAFB;border-radius:10px;border:1.5px solid var(--border);font-size:.88rem;line-height:1.5;}
+  .badge-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;font-family:'Fredoka One',cursive;font-size:.8rem;margin-right:7px;flex-shrink:0;}
+  .badge-let{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-family:'Fredoka One',cursive;font-size:.8rem;margin-right:7px;flex-shrink:0;}
+
+  .fill-item{margin-bottom:12px;}
+  .fill-text{font-size:.9rem;line-height:2;}
+  input.blank-input{border:none;border-bottom:2.5px solid var(--purple);padding:2px 8px;font-family:'Nunito',sans-serif;font-size:.9rem;width:140px;background:transparent;text-align:center;color:var(--text);transition:border-color .2s;}
+  input.blank-input:focus{outline:none;border-color:var(--orange);}
+  input.blank-input.correct{border-color:var(--green);background:#D1FAE5;}
+  input.blank-input.wrong{border-color:var(--red);background:#FEE2E2;}
+  input.blank-input.green{border-color:var(--green);}
+  input.blank-input.blue{border-color:var(--blue);}
+  input.blank-input.orange{border-color:var(--orange);}
+
+  .adj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:12px 0;}
+  .adj-card{background:#fff;border-radius:12px;padding:12px 10px;text-align:center;border:2px solid var(--border);transition:all .2s;}
+  .adj-card:hover{border-color:var(--purple);transform:translateY(-2px);}
+  .adj-emoji{font-size:1.6rem;display:block;margin-bottom:5px;}
+  .adj-word{font-weight:800;color:var(--purple);font-size:.85rem;}
+  .adj-def{font-size:.75rem;color:var(--muted);margin-top:2px;line-height:1.3;}
+
+  .classify-table{width:100%;border-collapse:collapse;margin-top:14px;}
+  .classify-table th{padding:10px 10px;text-align:left;font-family:'Fredoka One',cursive;font-size:.88rem;border-bottom:2px solid var(--border);}
+  .classify-table td{padding:8px 10px;vertical-align:top;border-bottom:1px solid var(--border);font-size:.85rem;}
+  .classify-area{min-height:70px;border:2px dashed var(--border);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;}
+  .placed-word{background:#EDE9FE;border:1.5px solid #C084FC;border-radius:50px;padding:3px 10px;font-size:.8rem;font-weight:700;color:var(--purple);cursor:pointer;transition:all .15s;}
+  .placed-word:hover{background:#DDD6FE;}
+
+  .btn{padding:10px 22px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;border:none;transition:all .18s;display:inline-flex;align-items:center;gap:7px;}
+  .btn-primary{background:var(--purple);color:#fff;}
+  .btn-primary:hover{background:#6D28D9;transform:translateY(-1px);}
+  .btn-success{background:var(--green);color:#fff;}
+  .btn-success:hover{background:#059669;transform:translateY(-1px);}
+  .btn-outline{background:#fff;color:var(--purple);border:2px solid var(--purple);}
+  .btn-outline:hover{background:#EDE9FE;}
+  .btn-amber{background:#F59E0B;color:#fff;}
+  .btn-amber:hover{background:#D97706;transform:translateY(-1px);}
+  .btn-sm{padding:7px 14px;font-size:.8rem;}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+
+  .feedback{padding:10px 16px;border-radius:10px;margin-top:12px;font-size:.88rem;font-weight:700;display:none;align-items:center;gap:8px;}
+  .feedback.show{display:flex;}
+  .feedback.ok{background:#D1FAE5;color:#065F46;border:1.5px solid #6EE7B7;}
+  .feedback.bad{background:#FEE2E2;color:#991B1B;border:1.5px solid #FCA5A5;}
+
+  .result-box{background:linear-gradient(135deg,#EDE9FE,#FCE7F3);border:2px solid #C084FC;border-radius:16px;padding:24px;text-align:center;margin-top:20px;display:none;}
+  .result-box.show{display:block;}
+  .result-score{font-family:'Fredoka One',cursive;font-size:3rem;color:var(--purple);}
+  .result-msg{font-size:1rem;font-weight:700;color:var(--pink);margin:6px 0;}
+  .result-emoji{font-size:2.5rem;}
+
+  .writing-area{width:100%;border:2px solid var(--border);border-radius:12px;padding:14px;font-family:'Nunito',sans-serif;font-size:.9rem;resize:vertical;min-height:120px;color:var(--text);background:#fff;transition:border-color .2s;}
+  .writing-area:focus{outline:none;border-color:var(--yellow);}
+  .counter{font-size:.75rem;color:var(--muted);text-align:right;margin-top:4px;}
+
+  .nav-btns{display:flex;justify-content:space-between;align-items:center;margin-top:28px;}
+
+  /* ===== CORRIGÉ STYLES ===== */
+  .corrige-section{background:#FFFBEB;min-height:60vh;}
+  .corrige-lock{text-align:center;padding:40px 20px;}
+  .corrige-lock h2{font-family:'Fredoka One',cursive;color:#92400E;font-size:1.6rem;margin-bottom:10px;}
+  .corrige-lock p{color:var(--muted);font-size:.9rem;margin-bottom:20px;}
+  .pin-input{border:2px solid #F59E0B;border-radius:12px;padding:10px 18px;font-size:1.2rem;text-align:center;letter-spacing:6px;font-family:'Fredoka One',cursive;width:180px;color:#92400E;background:#fff;}
+  .pin-input:focus{outline:none;border-color:#D97706;}
+  .pin-error{color:var(--red);font-size:.85rem;margin-top:8px;display:none;}
+
+  .corrige-content{display:none;}
+  .corrige-content.unlocked{display:block;}
+
+  .ans-block{background:#fff;border-radius:14px;padding:20px 22px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-left:5px solid var(--yellow);}
+  .ans-block.blue{border-left-color:var(--blue);}
+  .ans-block.green{border-left-color:var(--green);}
+  .ans-block.orange{border-left-color:var(--orange);}
+  .ans-block h3{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:12px;color:#92400E;}
+  .ans-block h3 span{background:#FEF3C7;border-radius:50px;padding:2px 10px;font-size:.75rem;margin-left:8px;color:#92400E;}
+
+  .ans-row{display:flex;align-items:flex-start;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);}
+  .ans-row:last-child{border-bottom:none;}
+  .ans-num{font-family:'Fredoka One',cursive;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.82rem;flex-shrink:0;color:#fff;background:var(--yellow);}
+  .ans-num.blue{background:var(--blue);}
+  .ans-num.green{background:var(--green);}
+  .ans-num.orange{background:var(--orange);}
+  .ans-q{font-size:.82rem;color:var(--muted);flex:1;}
+  .ans-a{font-size:.88rem;font-weight:700;color:var(--text);flex:2;}
+  .ans-badge{display:inline-block;padding:2px 10px;border-radius:50px;font-size:.78rem;font-weight:800;}
+  .ans-badge.t{background:#D1FAE5;color:#065F46;}
+  .ans-badge.f{background:#FEE2E2;color:#991B1B;}
+  .ans-explain{font-size:.78rem;color:var(--muted);margin-top:3px;font-style:italic;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .animal-tag{display:inline-block;background:#EDE9FE;border:1.5px solid #C084FC;border-radius:50px;padding:3px 10px;font-size:.8rem;font-weight:700;color:var(--purple);margin:2px;}
+
+  @media(max-width:540px){
+    .header h1{font-size:2rem;}
+    .match-grid,.grid2{grid-template-columns:1fr;}
+    .tabs{font-size:.78rem;}
+    .tab{padding:11px 10px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Unit 8 · English in Mind · 1re secondaire</div>
+  <h1>How <span>Brave!</span> 🦁</h1>
+  <div class="header-sub">Exercices interactifs — réponds et vérifie tes réponses !</div>
+  <div class="header-emojis">✏️ 📚 🌍 💪 🐘</div>
+</div>
+
+<div class="score-bar">
+  <div class="score-item">
+    <div class="score-num" id="total-score">0</div>
+    <div class="score-label">Points</div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+    <div style="font-size:.72rem;color:var(--muted);text-align:center;margin-top:4px;" id="progress-text">0 / 5 sections</div>
+  </div>
+  <div class="score-item">
+    <div class="score-num" id="done-count">0</div>
+    <div class="score-label">Complétés</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab(0)">📖 1. Compréhension</div>
+  <div class="tab" onclick="showTab(1)">📐 2. Grammaire</div>
+  <div class="tab" onclick="showTab(2)">🗣️ 3. Personnalité</div>
+  <div class="tab" onclick="showTab(3)">🐾 4. Animaux</div>
+  <div class="tab" onclick="showTab(4)">✍️ 5. Rédaction</div>
+  <div class="tab corrige" onclick="showTab(5)">🔑 Corrigé</div>
+</div>
+
+<div class="main">
+
+<!-- ======= SECTION 1 — COMPRÉHENSION ======= -->
+<div class="section active" id="sec-0">
+  <div class="sec-head">
+    <div class="sec-num" style="background:var(--purple)">1</div>
+    <h2 style="color:var(--purple)">Reading Comprehension</h2>
+    <span class="sec-tag">Malala's Story</span>
+  </div>
+  <div class="info-box">
+    📖 <strong>Rappel :</strong> Tu as lu l'article <em>"Back to School"</em> (p. 54). Il parle de <strong>Malala, Shazia et Kainat</strong>, trois jeunes filles du Pakistan qui ont courageusement défendu leur droit à l'éducation.
+  </div>
+  <div class="card">
+    <div class="card-title">✅ Exercise 1 — True or False? <span style="font-size:.75rem;color:var(--muted);font-family:'Nunito',sans-serif;font-weight:400">Clique sur TRUE ou FALSE puis vérifie.</span></div>
+    <ul class="tf-list" id="tf-list"></ul>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm" onclick="checkTF()">✅ Check answers</button>
+      <button class="btn btn-outline btn-sm" onclick="resetTF()">🔄 Reset</button>
+    </div>
+    <div class="feedback" id="tf-feedback"></div>
+  </div>
+  <div class="card green">
+    <div class="card-title">❓ Exercise 2 — Answer in full sentences.</div>
+    <div id="open-qs"></div>
+    <div class="btn-row">
+      <button class="btn btn-success btn-sm" onclick="showOpenAnswers()">🔍 See model answers</button>
+      <button class="btn btn-outline btn-sm" onclick="hideOpenAnswers()">🙈 Hide</button>
+    </div>
+    <div id="open-answers" style="display:none;margin-top:14px;background:#F0FDF4;border-radius:12px;padding:16px;border:2px solid #6EE7B7;font-size:.88rem;line-height:1.8;"></div>
+  </div>
+  <div class="nav-btns">
+    <span></span>
+    <button class="btn btn-primary" onclick="showTab(1)">Section suivante →</button>
+  </div>
+</div>
+
+<!-- ======= SECTION 2 — GRAMMAIRE ======= -->
+<div class="section" id="sec-1">
+  <div class="sec-head">
+    <div class="sec-num" style="background:var(--blue)">2</div>
+    <h2 style="color:var(--blue)">Focus on Grammar</h2>
+    <span class="sec-tag">First Conditional</span>
+  </div>
+  <div class="gram-box">
+    <h3>⭐ The First Conditional — future possibility</h3>
+    <p style="font-size:.88rem;">We use the first conditional to talk about things that are <em>possible in the future</em>.</p>
+    <div class="formula">
+      <span class="if">IF + present simple</span><span class="plus">,</span><span class="main">will / won't + infinitive</span>
+    </div>
+    <p style="font-size:.83rem;margin-top:9px;color:#4B5563;">💡 <em>Example :</em> <strong>If</strong> they go back to Pakistan, Malala's life <strong>will</strong> be in danger.</p>
+  </div>
+  <div class="card blue">
+    <div class="card-title">🔗 Exercise 3 — Match the two halves.</div>
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-item"><span class="badge-num">1</span> If you study hard,</div>
+        <div class="match-item"><span class="badge-num">2</span> If it rains tomorrow,</div>
+        <div class="match-item"><span class="badge-num">3</span> If she speaks up,</div>
+        <div class="match-item"><span class="badge-num">4</span> If they don't hurry,</div>
+        <div class="match-item"><span class="badge-num">5</span> If we recycle more,</div>
+      </div>
+      <div class="match-col">
+        <div class="match-item"><span class="badge-let">a</span> they will miss the bus.</div>
+        <div class="match-item"><span class="badge-let">b</span> we will help the planet.</div>
+        <div class="match-item"><span class="badge-let">c</span> you will pass your exam.</div>
+        <div class="match-item"><span class="badge-let">d</span> people will listen to her.</div>
+        <div class="match-item"><span class="badge-let">e</span> we won't go to the park.</div>
+      </div>
+    </div>
+    <p style="font-size:.85rem;margin-top:14px;color:var(--muted);">✏️ Entrez la lettre correcte :</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;" id="match-inputs"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm" onclick="checkMatch()">✅ Check</button>
+      <button class="btn btn-outline btn-sm" onclick="resetMatch()">🔄 Reset</button>
+    </div>
+    <div class="feedback" id="match-feedback"></div>
+  </div>
+  <div class="card blue">
+    <div class="card-title">✍️ Exercise 4 — Complete with the correct verb form.</div>
+    <div id="fill-items"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm" onclick="checkFill()">✅ Check</button>
+      <button class="btn btn-outline btn-sm" onclick="resetFill()">🔄 Reset</button>
+    </div>
+    <div class="feedback" id="fill-feedback"></div>
+  </div>
+  <div class="card blue">
+    <div class="card-title">🌟 Exercise 5 — Write 3 first conditional sentences about school life.</div>
+    <p style="font-size:.83rem;color:var(--muted);margin-bottom:12px;">💡 Use: <em>If I study hard, / If my friend is late, / If the weather is nice, …</em></p>
+    <div id="own-sentences"></div>
+  </div>
+  <div class="nav-btns">
+    <button class="btn btn-outline" onclick="showTab(0)">← Retour</button>
+    <button class="btn btn-primary" onclick="showTab(2)">Section suivante →</button>
+  </div>
+</div>
+
+<!-- ======= SECTION 3 — PERSONNALITÉ ======= -->
+<div class="section" id="sec-2">
+  <div class="sec-head">
+    <div class="sec-num" style="background:var(--green)">3</div>
+    <h2 style="color:var(--green)">Vocabulary</h2>
+    <span class="sec-tag">Personality Adjectives</span>
+  </div>
+  <div class="adj-grid">
+    <div class="adj-card"><span class="adj-emoji">😄</span><div class="adj-word">cheerful</div><div class="adj-def">always happy, smiling</div></div>
+    <div class="adj-card"><span class="adj-emoji">🤝</span><div class="adj-word">friendly</div><div class="adj-def">easy to talk to</div></div>
+    <div class="adj-card"><span class="adj-emoji">📚</span><div class="adj-word">hard-working</div><div class="adj-def">studies &amp; works a lot</div></div>
+    <div class="adj-card"><span class="adj-emoji">💎</span><div class="adj-word">honest</div><div class="adj-def">always tells the truth</div></div>
+    <div class="adj-card"><span class="adj-emoji">❤️</span><div class="adj-word">kind</div><div class="adj-def">thinks of others</div></div>
+    <div class="adj-card"><span class="adj-emoji">🗂️</span><div class="adj-word">organised</div><div class="adj-def">loves order &amp; tidiness</div></div>
+    <div class="adj-card"><span class="adj-emoji">🙏</span><div class="adj-word">polite</div><div class="adj-def">says please &amp; thank you</div></div>
+    <div class="adj-card"><span class="adj-emoji">🧘</span><div class="adj-word">relaxed</div><div class="adj-def">never worried</div></div>
+  </div>
+  <div class="card green" style="margin-top:20px;">
+    <div class="card-title">🔤 Exercise 6 — Fill in the blanks with the correct adjective.</div>
+    <div class="wbank">
+      <div class="wbank-label">🟩 Word Bank — clique pour insérer</div>
+      <div class="wbank-words" id="wbank6"></div>
+    </div>
+    <div id="adj-fill-items"></div>
+    <div class="btn-row">
+      <button class="btn btn-success btn-sm" onclick="checkAdjFill()">✅ Check</button>
+      <button class="btn btn-outline btn-sm" onclick="resetAdjFill()">🔄 Reset</button>
+    </div>
+    <div class="feedback" id="adj-feedback"></div>
+  </div>
+  <div class="card green">
+    <div class="card-title">🔄 Exercise 7 — Write the opposite adjective.</div>
+    <p style="font-size:.83rem;color:var(--muted);margin-bottom:12px;">💡 Use prefixes <em>un-</em> or <em>dis-</em>, or a completely different word.</p>
+    <div id="opp-items"></div>
+    <div class="btn-row">
+      <button class="btn btn-success btn-sm" onclick="checkOpp()">✅ Check</button>
+      <button class="btn btn-outline btn-sm" onclick="resetOpp()">🔄 Reset</button>
+    </div>
+    <div class="feedback" id="opp-feedback"></div>
+  </div>
+  <div class="nav-btns">
+    <button class="btn btn-outline" onclick="showTab(1)">← Retour</button>
+    <button class="btn btn-primary" onclick="showTab(3)">Section suivante →</button>
+  </div>
+</div>
+
+<!-- ======= SECTION 4 — ANIMAUX ======= -->
+<div class="section" id="sec-3">
+  <div class="sec-head">
+    <div class="sec-num" style="background:var(--orange)">4</div>
+    <h2 style="color:var(--orange)">Vocabulary</h2>
+    <span class="sec-tag">Animals</span>
+  </div>
+  <div class="card orange">
+    <div class="card-title">🐾 Exercise 8 — Classify the animals in the correct group.</div>
+    <div class="wbank" style="background:#FFF7ED;border-color:var(--orange);">
+      <div class="wbank-label" style="color:var(--orange);">🟠 Clique sur un animal pour le placer</div>
+      <div class="wbank-words" id="animal-bank"></div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="classify-table">
+        <thead><tr id="classify-heads"></tr></thead>
+        <tbody><tr id="classify-row"></tr></tbody>
+      </table>
+    </div>
+    <p style="font-size:.78rem;color:var(--muted);margin-top:8px;">💡 Clique sur un animal placé pour le remettre dans la banque.</p>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm" onclick="checkClassify()">✅ Check</button>
+      <button class="btn btn-outline btn-sm" onclick="resetClassify()">🔄 Reset</button>
+    </div>
+    <div class="feedback" id="classify-feedback"></div>
+  </div>
+  <div class="card orange">
+    <div class="card-title">💬 Exercise 9 — Describe an animal (3 sentences minimum).</div>
+    <p style="font-size:.83rem;color:var(--muted);margin-bottom:10px;">💡 <em>Useful phrases :</em> It lives in… / It eats… / It is… / It can… / People usually…</p>
+    <div style="margin-bottom:10px;">
+      <label style="font-size:.85rem;font-weight:700;">My animal :</label>
+      <input type="text" id="animal-choice" class="blank-input" style="width:180px;margin-left:10px;" placeholder="e.g. elephant">
+    </div>
+    <textarea id="animal-desc" class="writing-area" placeholder="Write your description here..." oninput="countWords('animal-desc','animal-counter')"></textarea>
+    <div class="counter" id="animal-counter">0 words</div>
+  </div>
+  <div class="nav-btns">
+    <button class="btn btn-outline" onclick="showTab(2)">← Retour</button>
+    <button class="btn btn-primary" onclick="showTab(4)">Section suivante →</button>
+  </div>
+</div>
+
+<!-- ======= SECTION 5 — RÉDACTION ======= -->
+<div class="section" id="sec-4">
+  <div class="sec-head">
+    <div class="sec-num" style="background:var(--pink)">5</div>
+    <h2 style="color:var(--pink)">Writing</h2>
+    <span class="sec-tag">Creative Task ⭐</span>
+  </div>
+  <div style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);border:2px solid #F59E0B;border-radius:16px;padding:20px 24px;margin-bottom:20px;">
+    <div style="font-family:'Fredoka One',cursive;color:#92400E;font-size:1.1rem;margin-bottom:10px;">🌟 Challenge — Be Brave!</div>
+    <p style="font-size:.9rem;color:#78350F;line-height:1.7;margin-bottom:10px;">
+      Imagine you are a journalist. Write a <strong>short news article</strong> (5–7 sentences) about a brave animal or person.
+      Use the <strong>past tense</strong> to tell what happened and include at least <strong>one first conditional sentence</strong> at the end.
+    </p>
+    <p style="font-size:.82rem;color:#92400E;">📌 <em>Think about :</em> Who? Where? What happened? Why was it brave? What will happen next?</p>
+  </div>
+  <div class="card pink">
+    <div class="card-title">📰 Your News Article</div>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:.85rem;font-weight:700;">Headline :</label>
+      <input type="text" id="headline" class="blank-input" style="width:100%;max-width:420px;margin-left:8px;" placeholder="Write your headline here…">
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:.85rem;font-weight:700;">Author :</label>
+      <input type="text" id="author" class="blank-input" style="width:180px;margin-left:8px;" placeholder="Your name">
+    </div>
+    <textarea id="article-text" class="writing-area" style="min-height:160px;" placeholder="Write your article here (5–7 sentences)…" oninput="countWords('article-text','article-counter')"></textarea>
+    <div class="counter" id="article-counter">0 words</div>
+    <div class="btn-row" style="margin-top:14px;">
+      <button class="btn btn-primary" onclick="previewArticle()">👁️ Preview my article</button>
+      <button class="btn btn-outline" onclick="clearArticle()">🗑️ Clear</button>
+    </div>
+    <div id="article-preview" style="display:none;margin-top:16px;background:#FFF7ED;border-radius:14px;padding:20px;border:2px solid #F59E0B;"></div>
+  </div>
+  <div class="card pink">
+    <div class="card-title">☑️ Self-checklist</div>
+    <div id="checklist-items"></div>
+  </div>
+  <div class="result-box" id="final-result">
+    <div class="result-emoji" id="result-emoji">🎉</div>
+    <div class="result-score" id="result-score">0</div>
+    <div style="font-size:.85rem;color:var(--muted);margin-bottom:4px;">points au total</div>
+    <div class="result-msg" id="result-msg">Excellent travail !</div>
+    <button class="btn btn-primary" style="margin-top:14px;" onclick="showTab(0)">🔄 Recommencer</button>
+  </div>
+  <div class="nav-btns" style="margin-top:20px;">
+    <button class="btn btn-outline" onclick="showTab(3)">← Retour</button>
+    <button class="btn btn-primary" onclick="showFinalScore()">🏆 Voir mon score final</button>
+  </div>
+</div>
+
+<!-- ======= SECTION 6 — CORRIGÉ ======= -->
+<div class="section corrige-section" id="sec-5">
+
+  <div class="sec-head">
+    <div class="sec-num" style="background:#F59E0B">🔑</div>
+    <h2 style="color:#92400E">Corrigé complet</h2>
+    <span class="sec-tag" style="background:#FEF3C7;color:#92400E;">Réponses officielles</span>
+  </div>
+
+  <!-- PIN LOCK -->
+  <div class="corrige-lock" id="corrige-lock">
+    <div style="font-size:3rem;margin-bottom:10px;">🔐</div>
+    <h2>Accès enseignant</h2>
+    <p>Ce corrigé est destiné au professeur.<br>Entre le code PIN pour l'afficher.</p>
+    <div style="margin:16px 0;">
+      <input type="password" class="pin-input" id="pin-input" maxlength="4" placeholder="• • • •" onkeydown="if(event.key==='Enter')checkPin()">
+    </div>
+    <button class="btn btn-amber" onclick="checkPin()">🔓 Déverrouiller</button>
+    <div class="pin-error" id="pin-error">❌ Code incorrect. Essaie encore.</div>
+    <p style="font-size:.75rem;color:var(--muted);margin-top:16px;">💡 Code par défaut : <strong>1234</strong> — à changer dans le code source.</p>
+  </div>
+
+  <!-- CORRIGÉ CONTENT (hidden until PIN) -->
+  <div class="corrige-content" id="corrige-content">
+
+    <div style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);border:2px solid #F59E0B;border-radius:14px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:1.8rem;">👩‍🏫</span>
+      <div>
+        <div style="font-family:'Fredoka One',cursive;color:#92400E;">Corrigé — Unit 8 How Brave!</div>
+        <div style="font-size:.82rem;color:#78350F;">English in Mind 10e · Cambridge University Press 2016</div>
+      </div>
+      <button class="btn btn-outline btn-sm" style="margin-left:auto;border-color:#F59E0B;color:#92400E;" onclick="lockCorrige()">🔒 Verrouiller</button>
+    </div>
+
+    <!-- EX 1 — TF -->
+    <div class="ans-block yellow">
+      <h3>📖 Exercise 1 — True or False <span>Section 1</span></h3>
+      <div class="ans-row">
+        <div class="ans-num">1</div>
+        <div class="ans-q">Malala comes from Lahore?</div>
+        <div class="ans-a"><span class="ans-badge f">FALSE</span><div class="ans-explain">They come from Mingora, in the Swat region of Pakistan.</div></div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num">2</div>
+        <div class="ans-q">Taliban banned girls' education in Swat in 2009?</div>
+        <div class="ans-a"><span class="ans-badge t">TRUE</span><div class="ans-explain">Stated in the first paragraph of the article.</div></div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num">3</div>
+        <div class="ans-q">Malala started her blog at age 14?</div>
+        <div class="ans-a"><span class="ans-badge f">FALSE</span><div class="ans-explain">She was only 11 years old when she started writing for the BBC.</div></div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num">4</div>
+        <div class="ans-q">Taliban shot Malala on 9th October 2012?</div>
+        <div class="ans-a"><span class="ans-badge t">TRUE</span><div class="ans-explain">Tuesday 9th October 2012 — stated in the introduction.</div></div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num">5</div>
+        <div class="ans-q">Malala went to hospital in France?</div>
+        <div class="ans-a"><span class="ans-badge f">FALSE</span><div class="ans-explain">She went to hospital in Pakistan first, then flew to the UK for operations.</div></div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num">6</div>
+        <div class="ans-q">Malala went back to school on 19th March 2013 in Birmingham?</div>
+        <div class="ans-a"><span class="ans-badge t">TRUE</span><div class="ans-explain">Correct — she started at an all-girls school in Birmingham, England.</div></div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num">7</div>
+        <div class="ans-q">Kainat can take the bus to school?</div>
+        <div class="ans-a"><span class="ans-badge f">FALSE</span><div class="ans-explain">Buses and taxis refuse to take her, so she studies from home.</div></div>
+      </div>
+    </div>
+
+    <!-- EX 2 — OPEN Qs -->
+    <div class="ans-block green">
+      <h3>❓ Exercise 2 — Open questions <span>Section 1</span></h3>
+      <div class="ans-row">
+        <div class="ans-num green">1</div>
+        <div class="ans-q">Why did the Taliban shoot them?</div>
+        <div class="ans-a">The Taliban shot them because the girls went to school. They wanted to stop girls from getting an education.</div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num green">2</div>
+        <div class="ans-q">What did Malala write about?</div>
+        <div class="ans-a">She wrote about the rights of girls — the right to education, to play, to sing, and to speak up.</div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num green">3</div>
+        <div class="ans-q">What was the unexpected result?</div>
+        <div class="ans-a">Instead of silencing her, the Taliban made her voice famous all over the world.</div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num green">4</div>
+        <div class="ans-q">Why doesn't Kainat go to school?</div>
+        <div class="ans-a">Buses and taxis refuse to take her to school, so she has to study from home.</div>
+      </div>
+    </div>
+
+    <!-- EX 3 — MATCH -->
+    <div class="ans-block blue">
+      <h3>🔗 Exercise 3 — Match <span>Section 2</span></h3>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;">
+        <div style="background:#DBEAFE;border-radius:10px;padding:10px 16px;font-size:.9rem;">
+          <strong style="color:var(--blue);">1 → c</strong><br><span style="font-size:.8rem;color:var(--muted);">If you study hard, <em>you will pass your exam.</em></span>
+        </div>
+        <div style="background:#DBEAFE;border-radius:10px;padding:10px 16px;font-size:.9rem;">
+          <strong style="color:var(--blue);">2 → e</strong><br><span style="font-size:.8rem;color:var(--muted);">If it rains tomorrow, <em>we won't go to the park.</em></span>
+        </div>
+        <div style="background:#DBEAFE;border-radius:10px;padding:10px 16px;font-size:.9rem;">
+          <strong style="color:var(--blue);">3 → d</strong><br><span style="font-size:.8rem;color:var(--muted);">If she speaks up, <em>people will listen to her.</em></span>
+        </div>
+        <div style="background:#DBEAFE;border-radius:10px;padding:10px 16px;font-size:.9rem;">
+          <strong style="color:var(--blue);">4 → a</strong><br><span style="font-size:.8rem;color:var(--muted);">If they don't hurry, <em>they will miss the bus.</em></span>
+        </div>
+        <div style="background:#DBEAFE;border-radius:10px;padding:10px 16px;font-size:.9rem;">
+          <strong style="color:var(--blue);">5 → b</strong><br><span style="font-size:.8rem;color:var(--muted);">If we recycle more, <em>we will help the planet.</em></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EX 4 — FILL -->
+    <div class="ans-block blue">
+      <h3>✍️ Exercise 4 — Verb forms <span>Section 2</span></h3>
+      <div class="ans-row">
+        <div class="ans-num blue">1</div>
+        <div class="ans-a">If she <strong style="color:var(--green);">doesn't go</strong> to school, she <strong style="color:var(--green);">will miss</strong> her friends.</div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num blue">2</div>
+        <div class="ans-a">They <strong style="color:var(--green);">will be</strong> happy if you <strong style="color:var(--green);">help</strong> them.</div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num blue">3</div>
+        <div class="ans-a">If I <strong style="color:var(--green);">see</strong> a snake, I <strong style="color:var(--green);">will run</strong> away!</div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num blue">4</div>
+        <div class="ans-a">The elephant <strong style="color:var(--green);">won't stop</strong> if we <strong style="color:var(--green);">don't call</strong> it.</div>
+      </div>
+      <div class="ans-row">
+        <div class="ans-num blue">5</div>
+        <div class="ans-a">If Malala <strong style="color:var(--green);">gives up</strong>, the world <strong style="color:var(--green);">will lose</strong> a great voice.</div>
+      </div>
+    </div>
+
+    <!-- EX 6 — ADJ FILL -->
+    <div class="ans-block green">
+      <h3>🔤 Exercise 6 — Adjective fill <span>Section 3</span></h3>
+      <div class="ans-row"><div class="ans-num green">1</div><div class="ans-a">Malala → <strong style="color:var(--green);">honest</strong></div></div>
+      <div class="ans-row"><div class="ans-num green">2</div><div class="ans-a">She smiled every day → <strong style="color:var(--green);">cheerful</strong></div></div>
+      <div class="ans-row"><div class="ans-num green">3</div><div class="ans-a">John says please & thank you → <strong style="color:var(--green);">polite</strong></div></div>
+      <div class="ans-row"><div class="ans-num green">4</div><div class="ans-a">Emma studies every evening → <strong style="color:var(--green);">hard-working</strong></div></div>
+      <div class="ans-row"><div class="ans-num green">5</div><div class="ans-a">Teacher keeps papers in order → <strong style="color:var(--green);">organised</strong></div></div>
+      <div class="ans-row"><div class="ans-num green">6</div><div class="ans-a">Neighbour helps people → <strong style="color:var(--green);">kind</strong></div></div>
+      <div class="ans-row"><div class="ans-num green">7</div><div class="ans-a">Tom never worries → <strong style="color:var(--green);">relaxed</strong></div></div>
+      <div class="ans-row"><div class="ans-num green">8</div><div class="ans-a">Sarah welcomes new students → <strong style="color:var(--green);">friendly</strong></div></div>
+    </div>
+
+    <!-- EX 7 — OPPOSITES -->
+    <div class="ans-block green">
+      <h3>🔄 Exercise 7 — Opposites <span>Section 3</span></h3>
+      <div class="ans-row"><div class="ans-num green">1</div><div class="ans-q">honest</div><div class="ans-a">→ <strong style="color:var(--green);">dishonest</strong></div></div>
+      <div class="ans-row"><div class="ans-num green">2</div><div class="ans-q">kind</div><div class="ans-a">→ <strong style="color:var(--green);">unkind</strong> <span style="font-size:.78rem;color:var(--muted);">(also accepted: cruel, mean)</span></div></div>
+      <div class="ans-row"><div class="ans-num green">3</div><div class="ans-q">polite</div><div class="ans-a">→ <strong style="color:var(--green);">rude</strong> <span style="font-size:.78rem;color:var(--muted);">(also accepted: impolite)</span></div></div>
+      <div class="ans-row"><div class="ans-num green">4</div><div class="ans-q">hard-working</div><div class="ans-a">→ <strong style="color:var(--green);">lazy</strong></div></div>
+      <div class="ans-row"><div class="ans-num green">5</div><div class="ans-q">organised</div><div class="ans-a">→ <strong style="color:var(--green);">disorganised</strong> <span style="font-size:.78rem;color:var(--muted);">(also accepted: messy)</span></div></div>
+    </div>
+
+    <!-- EX 8 — ANIMALS -->
+    <div class="ans-block orange">
+      <h3>🐾 Exercise 8 — Classify animals <span>Section 4</span></h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:10px;">
+        <div style="background:#DBEAFE;border-radius:10px;padding:10px 12px;">
+          <div style="font-family:'Fredoka One',cursive;color:#1E40AF;font-size:.85rem;margin-bottom:6px;">🌊 Sea mammals</div>
+          <span class="animal-tag">shark</span><span class="animal-tag">dolphin</span><span class="animal-tag">whale</span>
+        </div>
+        <div style="background:#D1FAE5;border-radius:10px;padding:10px 12px;">
+          <div style="font-family:'Fredoka One',cursive;color:#065F46;font-size:.85rem;margin-bottom:6px;">🐒 Primates</div>
+          <span class="animal-tag" style="background:#D1FAE5;border-color:#6EE7B7;color:#065F46;">gorilla</span>
+          <span class="animal-tag" style="background:#D1FAE5;border-color:#6EE7B7;color:#065F46;">chimpanzee</span>
+          <span class="animal-tag" style="background:#D1FAE5;border-color:#6EE7B7;color:#065F46;">monkey</span>
+        </div>
+        <div style="background:#FEF3C7;border-radius:10px;padding:10px 12px;">
+          <div style="font-family:'Fredoka One',cursive;color:#92400E;font-size:.85rem;margin-bottom:6px;">🦋 Insects</div>
+          <span class="animal-tag" style="background:#FEF3C7;border-color:#FCD34D;color:#92400E;">spider</span>
+          <span class="animal-tag" style="background:#FEF3C7;border-color:#FCD34D;color:#92400E;">butterfly</span>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px;font-style:italic;">⚠️ spider = arachnid, not insect — acceptable here by context</div>
+        </div>
+        <div style="background:#FCE7F3;border-radius:10px;padding:10px 12px;">
+          <div style="font-family:'Fredoka One',cursive;color:#9D174D;font-size:.85rem;margin-bottom:6px;">🦎 Reptiles/Amphibians</div>
+          <span class="animal-tag" style="background:#FCE7F3;border-color:#F9A8D4;color:#9D174D;">frog</span>
+          <span class="animal-tag" style="background:#FCE7F3;border-color:#F9A8D4;color:#9D174D;">lizard</span>
+        </div>
+        <div style="background:#EDE9FE;border-radius:10px;padding:10px 12px;">
+          <div style="font-family:'Fredoka One',cursive;color:#4C1D95;font-size:.85rem;margin-bottom:6px;">🐦 Birds</div>
+          <span class="animal-tag">owl</span><span class="animal-tag">hen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EX 5 — EXAMPLE SENTENCES -->
+    <div class="ans-block blue">
+      <h3>🌟 Exercise 5 — Example sentences <span>Section 2</span></h3>
+      <p style="font-size:.83rem;color:var(--muted);margin-bottom:10px;">Ces phrases sont des exemples. Toute phrase grammaticalement correcte au premier conditionnel est acceptée.</p>
+      <div class="ans-row"><div class="ans-num blue">1</div><div class="ans-a">If I study every evening, I will pass my English exam.</div></div>
+      <div class="ans-row"><div class="ans-num blue">2</div><div class="ans-a">If my friend is late, the teacher will be angry.</div></div>
+      <div class="ans-row"><div class="ans-num blue">3</div><div class="ans-a">If the weather is nice, we will have lunch outside.</div></div>
+    </div>
+
+    <!-- WRITING CRITERIA -->
+    <div class="ans-block" style="border-left-color:var(--pink);">
+      <h3>✍️ Exercise 5 (Rédaction) — Critères d'évaluation <span>Section 5</span></h3>
+      <p style="font-size:.83rem;color:var(--muted);margin-bottom:12px;">Grille de correction suggérée :</p>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:.85rem;">
+          <thead>
+            <tr style="background:#FDF2F8;">
+              <th style="padding:9px 12px;text-align:left;border-bottom:2px solid var(--border);color:var(--pink);">Critère</th>
+              <th style="padding:9px 12px;text-align:center;border-bottom:2px solid var(--border);color:var(--pink);">Points</th>
+              <th style="padding:9px 12px;text-align:left;border-bottom:2px solid var(--border);color:var(--pink);">Commentaire</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:8px 12px;border-bottom:1px solid var(--border);">Contenu (5–7 phrases)</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border);">/ 3</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);">Qui, où, que s'est-il passé ?</td></tr>
+            <tr><td style="padding:8px 12px;border-bottom:1px solid var(--border);">Utilisation du passé</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border);">/ 2</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);">Simple past correct</td></tr>
+            <tr><td style="padding:8px 12px;border-bottom:1px solid var(--border);">1st conditional présent</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border);">/ 2</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);">If + present simple, will + inf.</td></tr>
+            <tr><td style="padding:8px 12px;border-bottom:1px solid var(--border);">Orthographe &amp; grammaire</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border);">/ 2</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);">Peu de fautes</td></tr>
+            <tr><td style="padding:8px 12px;">Titre + nom</td><td style="padding:8px 12px;text-align:center;">/ 1</td><td style="padding:8px 12px;color:var(--muted);">Headline présent</td></tr>
+            <tr style="background:#FDF2F8;font-weight:800;">
+              <td style="padding:9px 12px;">TOTAL</td>
+              <td style="padding:9px 12px;text-align:center;color:var(--pink);">/ 10</td>
+              <td style="padding:9px 12px;"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EXAMPLE ARTICLE -->
+    <div class="ans-block" style="border-left-color:var(--pink);">
+      <h3>📰 Exemple d'article modèle <span>Section 5</span></h3>
+      <div style="background:#FFF7ED;border-radius:12px;padding:18px;border:2px solid #F59E0B;margin-top:10px;">
+        <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#92400E;border-bottom:2px solid #F59E0B;padding-bottom:8px;margin-bottom:10px;">A Brave Elephant Saves Lives</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px;">By A. Student | 19th March 2013</div>
+        <p style="font-size:.88rem;line-height:1.8;">
+          On 26th December 2004, a young girl named Kris was riding her elephant, Hannah, on a beach in Thailand. 
+          Suddenly, Hannah stopped and refused to move. She ran away from the sea and carried Kris to safety on higher ground. 
+          A few minutes later, a huge tsunami hit the beach. Hannah's actions saved Kris and many other people. 
+          Kris's family did not understand what happened at first. However, they were very grateful for Hannah's courage. 
+          <strong style="color:var(--blue);">If Hannah had not acted so quickly, many more lives would have been lost.</strong>
+        </p>
+      </div>
+      <p style="font-size:.78rem;color:var(--muted);margin-top:8px;">✅ Cet exemple contient : passé simple, description claire, première conditionnelle en fin d'article.</p>
+    </div>
+
+  </div><!-- /corrige-content -->
+</div><!-- /sec-5 -->
+
+</div><!-- /main -->
+
+<script>
+const TF_DATA=[
+  {text:"Malala, Shazia and Kainat come from Lahore, Pakistan.",ans:"FALSE",explain:"They come from Mingora, in the Swat region of Pakistan."},
+  {text:"In 2009, the Taliban banned education for girls in the Swat region.",ans:"TRUE",explain:"Correct — stated in the first paragraph."},
+  {text:"Malala started writing a blog for the BBC when she was 14 years old.",ans:"FALSE",explain:"She was only 11 years old."},
+  {text:"The Taliban shot Malala on 9th October 2012.",ans:"TRUE",explain:"Tuesday 9th October 2012."},
+  {text:"After the shooting, Malala went to hospital in France.",ans:"FALSE",explain:"She went to Pakistan first, then flew to the UK."},
+  {text:"Malala went back to school on 19th March 2013 in Birmingham.",ans:"TRUE",explain:"Correct — all-girls school in Birmingham."},
+  {text:"Kainat can take the bus to school in Mingora.",ans:"FALSE",explain:"Buses and taxis refuse to take her; she studies from home."},
+];
+const OPEN_QS=[
+  {q:"Why did the Taliban shoot Malala and her friends?",a:"The Taliban shot them because the girls went to school. They wanted to stop girls from getting an education."},
+  {q:"What did Malala write about in her blog?",a:"She wrote about the rights of girls — the right to education, to play, to sing, and to speak up."},
+  {q:"What was the unexpected result of the Taliban's attack on Malala?",a:"Instead of silencing her, the Taliban made her voice famous all over the world."},
+  {q:"Why doesn't Kainat go to school in person?",a:"Buses and taxis refuse to take her to school, so she has to study from home."},
+];
+const MATCH_ANSWERS=["c","e","d","a","b"];
+const FILL_DATA=[
+  {template:"If she {0} (not / go) to school, she {1} (miss) her friends.",answers:["doesn't go","will miss"]},
+  {template:"They {0} (be) happy if you {1} (help) them.",answers:["will be","help"]},
+  {template:"If I {0} (see) a snake, I {1} (run) away!",answers:["see","will run"]},
+  {template:"The elephant {0} (not / stop) if we {1} (not / call) it.",answers:["won't stop","don't call"]},
+  {template:"If Malala {0} (give up), the world {1} (lose) a great voice.",answers:["gives up","will lose"]},
+];
+const ADJ_FILL_DATA=[
+  {text:"Malala always fought for the truth. She was very {0}.",ans:"honest"},
+  {text:"She smiled every day, even in difficult moments. She was so {0}.",ans:"cheerful"},
+  {text:"John always says 'please' and 'thank you' to everyone. He is very {0}.",ans:"polite"},
+  {text:"Emma studies every evening and never gives up. She is extremely {0}.",ans:"hard-working"},
+  {text:"My teacher keeps all her papers in perfect order. She is very {0}.",ans:"organised"},
+  {text:"My neighbour always helps people who are in trouble. He is really {0}.",ans:"kind"},
+  {text:"Tom never worries about exams. He is totally {0}.",ans:"relaxed"},
+  {text:"Sarah introduces herself to new students. She is very {0}.",ans:"friendly"},
+];
+const OPP_DATA=[
+  {word:"honest",accept:["dishonest"]},
+  {word:"kind",accept:["unkind","cruel","mean"]},
+  {word:"polite",accept:["rude","impolite"]},
+  {word:"hard-working",accept:["lazy"]},
+  {word:"organised",accept:["disorganised","disorganized","messy"]},
+];
+const ANIMALS=["shark","gorilla","frog","dolphin","spider","chimpanzee","owl","lizard","butterfly","whale","monkey","hen"];
+const CATEGORIES=[
+  {name:"🌊 Sea mammals",color:"#DBEAFE",tc:"#1E40AF",answers:["shark","dolphin","whale"]},
+  {name:"🐒 Primates",color:"#D1FAE5",tc:"#065F46",answers:["gorilla","chimpanzee","monkey"]},
+  {name:"🦋 Insects",color:"#FEF3C7",tc:"#92400E",answers:["spider","butterfly"]},
+  {name:"🦎 Reptiles/Amphibians",color:"#FCE7F3",tc:"#9D174D",answers:["frog","lizard"]},
+  {name:"🐦 Birds",color:"#EDE9FE",tc:"#4C1D95",answers:["owl","hen"]},
+];
+const CHECKLIST=[
+  "I used the past tense to tell the story.",
+  "I included at least one first conditional sentence.",
+  "I wrote 5 to 7 sentences.",
+  "I checked my spelling.",
+  "I wrote a headline and my name.",
+];
+
+// PIN — change "1234" to your preferred code
+const CORRECT_PIN = "1234";
+
+let scores={tf:0,match:0,fill:0,adjFill:0,opp:0};
+let doneSections=new Set();
+
+function updateScoreBar(){
+  const total=Object.values(scores).reduce((a,b)=>a+b,0);
+  document.getElementById('total-score').textContent=total;
+  document.getElementById('done-count').textContent=doneSections.size;
+  const pct=Math.round(doneSections.size/5*100);
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-text').textContent=doneSections.size+' / 5 sections';
+}
+
+function showTab(i){
+  document.querySelectorAll('.section').forEach((s,idx)=>s.classList.toggle('active',idx===i));
+  document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// TF
+function buildTF(){
+  const ul=document.getElementById('tf-list');
+  ul.innerHTML='';
+  TF_DATA.forEach((item,i)=>{
+    ul.innerHTML+=`<li class="tf-item" id="tf-item-${i}">
+      <span class="tf-text">${i+1}. ${item.text}</span>
+      <div class="tf-btns">
+        <button class="tf-btn t" onclick="selectTF(${i},'TRUE')">TRUE</button>
+        <button class="tf-btn f" onclick="selectTF(${i},'FALSE')">FALSE</button>
+      </div></li>`;
+  });
+}
+let tfAnswers=Array(TF_DATA.length).fill(null);
+function selectTF(i,val){
+  tfAnswers[i]=val;
+  const btns=document.querySelectorAll(`#tf-item-${i} .tf-btn`);
+  btns[0].classList.toggle('selected-t',val==='TRUE');
+  btns[1].classList.toggle('selected-f',val==='FALSE');
+}
+function checkTF(){
+  let correct=0;
+  TF_DATA.forEach((item,i)=>{
+    const btns=document.querySelectorAll(`#tf-item-${i} .tf-btn`);
+    btns.forEach(b=>{b.classList.remove('correct','wrong','selected-t','selected-f');});
+    if(!tfAnswers[i])return;
+    const isOk=tfAnswers[i]===item.ans;
+    if(isOk){(item.ans==='TRUE'?btns[0]:btns[1]).classList.add('correct');correct++;}
+    else{(item.ans==='TRUE'?btns[1]:btns[0]).classList.add('wrong');(item.ans==='TRUE'?btns[0]:btns[1]).classList.add('correct');}
+  });
+  scores.tf=correct;doneSections.add('tf');updateScoreBar();
+  const fb=document.getElementById('tf-feedback');
+  fb.className='feedback show '+(correct>=5?'ok':'bad');
+  fb.innerHTML=(correct>=5?'✅':'❌')+` ${correct} / ${TF_DATA.length} correct !`;
+}
+function resetTF(){tfAnswers=Array(TF_DATA.length).fill(null);buildTF();document.getElementById('tf-feedback').className='feedback';}
+
+// OPEN Qs
+function buildOpenQs(){
+  const el=document.getElementById('open-qs');
+  el.innerHTML=OPEN_QS.map((q,i)=>`<div class="q-item"><div class="q-text">${i+1}. ${q.q}</div><textarea class="q-input" id="openq-${i}" placeholder="Write your answer here…"></textarea></div>`).join('');
+}
+function showOpenAnswers(){
+  const el=document.getElementById('open-answers');
+  el.style.display='block';
+  el.innerHTML='<strong style="color:var(--green)">✅ Model answers :</strong><br><br>'+OPEN_QS.map((q,i)=>`<strong>${i+1}.</strong> ${q.a}`).join('<br><br>');
+  doneSections.add('open');updateScoreBar();
+}
+function hideOpenAnswers(){document.getElementById('open-answers').style.display='none';}
+
+// MATCH
+function buildMatch(){
+  const el=document.getElementById('match-inputs');
+  el.innerHTML=MATCH_ANSWERS.map((_,i)=>`<div style="display:flex;align-items:center;gap:6px;">
+    <span style="font-family:'Fredoka One',cursive;color:var(--orange);">${i+1} —</span>
+    <input type="text" id="match-${i}" maxlength="1" style="border:none;border-bottom:2.5px solid var(--blue);width:36px;text-align:center;font-family:'Nunito',sans-serif;font-size:.9rem;background:transparent;color:var(--text);text-transform:lowercase;" placeholder="?">
+  </div>`).join('');
+}
+function checkMatch(){
+  let correct=0;
+  MATCH_ANSWERS.forEach((ans,i)=>{
+    const inp=document.getElementById(`match-${i}`);
+    inp.classList.remove('correct','wrong');
+    if(inp.value.trim().toLowerCase()===ans){inp.classList.add('correct');correct++;}
+    else if(inp.value.trim()){inp.classList.add('wrong');}
+  });
+  scores.match=correct;doneSections.add('match');updateScoreBar();
+  const fb=document.getElementById('match-feedback');
+  fb.className='feedback show '+(correct>=4?'ok':'bad');
+  fb.innerHTML=(correct>=4?'✅':'❌')+` ${correct} / 5 correct !`;
+}
+function resetMatch(){
+  MATCH_ANSWERS.forEach((_,i)=>{const inp=document.getElementById(`match-${i}`);inp.value='';inp.classList.remove('correct','wrong');});
+  document.getElementById('match-feedback').className='feedback';
+}
+
+// FILL
+function buildFill(){
+  const el=document.getElementById('fill-items');
+  el.innerHTML=FILL_DATA.map((item,i)=>{
+    let html=item.template;
+    html=html.replace(/\{0\}/,`<input class="blank-input blue" type="text" id="fill-${i}-0" placeholder="…" style="width:130px;">`);
+    html=html.replace(/\{1\}/,`<input class="blank-input blue" type="text" id="fill-${i}-1" placeholder="…" style="width:130px;">`);
+    return `<div class="fill-item"><span style="font-family:'Fredoka One',cursive;color:var(--blue);margin-right:6px;">${i+1}.</span><span class="fill-text">${html}</span></div>`;
+  }).join('');
+}
+function normalize(s){return s.trim().toLowerCase().replace(/['']/g,"'");}
+function checkFill(){
+  let correct=0,total=0;
+  FILL_DATA.forEach((item,i)=>{
+    item.answers.forEach((ans,j)=>{
+      total++;
+      const inp=document.getElementById(`fill-${i}-${j}`);
+      inp.classList.remove('correct','wrong');
+      if(normalize(inp.value)===normalize(ans)){inp.classList.add('correct');correct++;}
+      else if(inp.value.trim()){inp.classList.add('wrong');inp.title='Answer: '+ans;}
+    });
+  });
+  scores.fill=correct;doneSections.add('fill');updateScoreBar();
+  const fb=document.getElementById('fill-feedback');
+  fb.className='feedback show '+(correct>=8?'ok':'bad');
+  fb.innerHTML=(correct>=8?'✅':'❌')+` ${correct} / ${total} correct !`;
+}
+function resetFill(){
+  FILL_DATA.forEach((item,i)=>{item.answers.forEach((_,j)=>{const inp=document.getElementById(`fill-${i}-${j}`);inp.value='';inp.classList.remove('correct','wrong');inp.title='';});});
+  document.getElementById('fill-feedback').className='feedback';
+}
+
+// OWN
+function buildOwnSentences(){
+  const el=document.getElementById('own-sentences');
+  el.innerHTML=[1,2,3].map(i=>`<div class="q-item"><div class="q-text" style="color:var(--blue)">${i}. Your sentence :</div><textarea class="q-input" id="own-${i}" placeholder="If …, … will …"></textarea></div>`).join('');
+}
+
+// ADJ FILL
+const adj8=["honest","cheerful","polite","hard-working","organised","kind","relaxed","friendly"];
+let adjFillActive=null;
+function buildAdjFill(){
+  const wb=document.getElementById('wbank6');
+  wb.innerHTML=adj8.map(w=>`<span class="wbank-word" id="wb-${w}" onclick="wbClick('${w}')">${w}</span>`).join('');
+  const el=document.getElementById('adj-fill-items');
+  el.innerHTML=ADJ_FILL_DATA.map((item,i)=>{
+    const html=item.text.replace('{0}',`<input class="blank-input green" type="text" id="adj-${i}" readonly placeholder="click a word" style="width:130px;cursor:pointer;" onclick="adjClick(${i})">`);
+    return `<div class="fill-item"><span style="font-family:'Fredoka One',cursive;color:var(--green);margin-right:6px;">${i+1}.</span><span class="fill-text">${html}</span></div>`;
+  }).join('');
+}
+function wbClick(word){
+  if(adjFillActive!==null){
+    const inp=document.getElementById(`adj-${adjFillActive}`);
+    const prev=inp.value;
+    if(prev)document.getElementById('wb-'+prev)?.classList.remove('used');
+    inp.value=word;inp.classList.remove('correct','wrong');
+    document.getElementById('wb-'+word).classList.add('used');
+    adjFillActive=null;
+    document.querySelectorAll('.blank-input.green').forEach(i=>i.style.background='');
+  }
+}
+function adjClick(i){
+  adjFillActive=i;
+  document.querySelectorAll('.blank-input.green').forEach((inp,idx)=>{inp.style.background=idx===i?'#FEF3C7':'';});
+}
+function checkAdjFill(){
+  let correct=0;
+  ADJ_FILL_DATA.forEach((item,i)=>{
+    const inp=document.getElementById(`adj-${i}`);
+    inp.classList.remove('correct','wrong');
+    if(normalize(inp.value)===normalize(item.ans)){inp.classList.add('correct');correct++;}
+    else if(inp.value){inp.classList.add('wrong');inp.title=item.ans;}
+  });
+  scores.adjFill=correct;doneSections.add('adjFill');updateScoreBar();
+  const fb=document.getElementById('adj-feedback');
+  fb.className='feedback show '+(correct>=6?'ok':'bad');
+  fb.innerHTML=(correct>=6?'✅':'❌')+` ${correct} / ${ADJ_FILL_DATA.length} correct !`;
+}
+function resetAdjFill(){
+  adj8.forEach(w=>document.getElementById('wb-'+w)?.classList.remove('used'));
+  ADJ_FILL_DATA.forEach((_,i)=>{const inp=document.getElementById(`adj-${i}`);inp.value='';inp.classList.remove('correct','wrong');inp.style.background='';});
+  adjFillActive=null;document.getElementById('adj-feedback').className='feedback';
+}
+
+// OPPOSITES
+function buildOpp(){
+  const el=document.getElementById('opp-items');
+  el.innerHTML=OPP_DATA.map((item,i)=>`<div class="fill-item" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+    <span style="font-family:'Fredoka One',cursive;color:var(--green);min-width:14px;">${i+1}.</span>
+    <span style="font-weight:700;min-width:120px;">${item.word}</span>
+    <span style="color:var(--muted);">➜</span>
+    <input type="text" id="opp-${i}" class="blank-input green" style="width:160px;" placeholder="opposite…">
+  </div>`).join('');
+}
+function checkOpp(){
+  let correct=0;
+  OPP_DATA.forEach((item,i)=>{
+    const inp=document.getElementById(`opp-${i}`);
+    inp.classList.remove('correct','wrong');
+    const val=normalize(inp.value);
+    if(item.accept.map(normalize).includes(val)){inp.classList.add('correct');correct++;}
+    else if(val){inp.classList.add('wrong');inp.title='Accepted: '+item.accept.join(' / ');}
+  });
+  scores.opp=correct;doneSections.add('opp');updateScoreBar();
+  const fb=document.getElementById('opp-feedback');
+  fb.className='feedback show '+(correct>=4?'ok':'bad');
+  fb.innerHTML=(correct>=4?'✅':'❌')+` ${correct} / ${OPP_DATA.length} correct !`;
+}
+function resetOpp(){
+  OPP_DATA.forEach((_,i)=>{const inp=document.getElementById(`opp-${i}`);inp.value='';inp.classList.remove('correct','wrong');inp.title='';});
+  document.getElementById('opp-feedback').className='feedback';
+}
+
+// CLASSIFY
+let selectedAnimalForPlace=null;
+function buildClassify(){
+  const bank=document.getElementById('animal-bank');
+  bank.innerHTML=ANIMALS.map(a=>`<span class="wbank-word" id="abk-${a}" onclick="placeAnimal('${a}')" style="border-color:#FCA5A5;color:#991B1B;">${a}</span>`).join('');
+  const heads=document.getElementById('classify-heads');
+  heads.innerHTML=CATEGORIES.map(c=>`<th style="background:${c.color};border-radius:8px 8px 0 0;padding:8px 10px;color:${c.tc};font-family:'Fredoka One',cursive;font-size:.85rem;min-width:110px;">${c.name}</th>`).join('');
+  const row=document.getElementById('classify-row');
+  row.innerHTML=CATEGORIES.map(c=>`<td><div class="classify-area" id="cat-${c.name.replace(/\W/g,'_')}"></div></td>`).join('');
+}
+function placeAnimal(name){
+  selectedAnimalForPlace=name;
+  document.querySelectorAll('.wbank-word').forEach(w=>w.style.outline='');
+  const el=document.getElementById('abk-'+name);
+  if(el)el.style.outline='2px solid var(--orange)';
+  document.querySelectorAll('.classify-area').forEach(area=>{area.style.cursor='pointer';area.onclick=()=>dropInArea(area,name);});
+}
+function dropInArea(area,name){
+  const bk=document.getElementById('abk-'+name);
+  if(bk)bk.classList.add('used');
+  const el=document.createElement('span');el.className='placed-word';el.textContent=name;
+  el.onclick=()=>returnAnimal(name,area,el);area.appendChild(el);
+  document.querySelectorAll('.classify-area').forEach(a=>{a.style.cursor='';a.onclick=null;});
+  document.querySelectorAll('.wbank-word').forEach(w=>w.style.outline='');
+  selectedAnimalForPlace=null;
+}
+function returnAnimal(name,area,el){area.removeChild(el);const bk=document.getElementById('abk-'+name);if(bk)bk.classList.remove('used');}
+function checkClassify(){
+  let correct=0;
+  CATEGORIES.forEach(c=>{
+    const area=document.getElementById('cat-'+c.name.replace(/\W/g,'_'));
+    area.querySelectorAll('.placed-word').forEach(el=>{
+      const name=el.textContent;
+      if(c.answers.includes(name)){el.style.background='#D1FAE5';el.style.borderColor='var(--green)';el.style.color='#065F46';correct++;}
+      else{el.style.background='#FEE2E2';el.style.borderColor='var(--red)';el.style.color='#991B1B';}
+    });
+  });
+  doneSections.add('classify');updateScoreBar();
+  const fb=document.getElementById('classify-feedback');
+  fb.className='feedback show '+(correct>=9?'ok':'bad');
+  fb.innerHTML=(correct>=9?'✅':'❌')+` ${correct} / ${ANIMALS.length} animals placed correctly !`;
+}
+function resetClassify(){buildClassify();document.getElementById('classify-feedback').className='feedback';}
+
+// WRITING
+function countWords(taId,counterId){const text=document.getElementById(taId).value.trim();const words=text?text.split(/\s+/).length:0;document.getElementById(counterId).textContent=words+' word'+(words!==1?'s':'');}
+function previewArticle(){
+  const headline=document.getElementById('headline').value||'— No headline —';
+  const author=document.getElementById('author').value||'— Anonymous —';
+  const text=document.getElementById('article-text').value||'— No content —';
+  const prev=document.getElementById('article-preview');prev.style.display='block';
+  prev.innerHTML=`<div style="border-bottom:2px solid var(--yellow);padding-bottom:10px;margin-bottom:12px;"><div style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:#92400E;">${headline}</div><div style="font-size:.8rem;color:var(--muted);margin-top:4px;">By ${author} &nbsp;|&nbsp; ${new Date().toLocaleDateString('fr-CH')}</div></div><p style="font-size:.9rem;line-height:1.8;">${text.replace(/\n/g,'<br>')}</p>`;
+  doneSections.add('writing');updateScoreBar();
+}
+function clearArticle(){document.getElementById('headline').value='';document.getElementById('author').value='';document.getElementById('article-text').value='';document.getElementById('article-preview').style.display='none';document.getElementById('article-counter').textContent='0 words';}
+
+// CHECKLIST
+function buildChecklist(){
+  const el=document.getElementById('checklist-items');
+  el.innerHTML=CHECKLIST.map((item,i)=>`<label style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;font-size:.9rem;"><input type="checkbox" id="chk-${i}" style="width:18px;height:18px;accent-color:var(--pink);cursor:pointer;"><span>${item}</span></label>`).join('');
+}
+
+// FINAL SCORE
+function showFinalScore(){
+  const total=Object.values(scores).reduce((a,b)=>a+b,0);
+  const box=document.getElementById('final-result');box.classList.add('show');
+  document.getElementById('result-score').textContent=total;
+  const pct=total/35;
+  let msg,emoji;
+  if(pct>=.9){msg="Excellent travail ! Tu es une star ! 🌟";emoji="🏆";}
+  else if(pct>=.7){msg="Très bien ! Continue comme ça !";emoji="🎉";}
+  else if(pct>=.5){msg="Pas mal ! Relis tes erreurs et réessaie.";emoji="💪";}
+  else{msg="Continue à t'entraîner, tu vas y arriver !";emoji="📚";}
+  document.getElementById('result-emoji').textContent=emoji;
+  document.getElementById('result-msg').textContent=msg;
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+// PIN
+function checkPin(){
+  const val=document.getElementById('pin-input').value;
+  if(val===CORRECT_PIN){
+    document.getElementById('corrige-lock').style.display='none';
+    document.getElementById('corrige-content').classList.add('unlocked');
+  } else {
+    const err=document.getElementById('pin-error');
+    err.style.display='block';
+    document.getElementById('pin-input').value='';
+    setTimeout(()=>err.style.display='none',3000);
+  }
+}
+function lockCorrige(){
+  document.getElementById('corrige-lock').style.display='block';
+  document.getElementById('corrige-content').classList.remove('unlocked');
+  document.getElementById('pin-input').value='';
+  showTab(0);
+}
+
+// INIT
+buildTF();buildOpenQs();buildMatch();buildFill();buildOwnSentences();buildAdjFill();buildOpp();buildClassify();buildChecklist();
+</script>
+</body>
+</html>
